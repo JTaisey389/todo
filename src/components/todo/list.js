@@ -18,7 +18,7 @@ export default function TodoList(props) {
             <span onClick={() => props.handleComplete(item._id)}>
               {item.text}
             </span>
-            //The list section is where we can delete an item and update an item, this is next
+          
             </ListGroup.Item>
           </ListGroup>
         ))}

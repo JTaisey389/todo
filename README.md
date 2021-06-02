@@ -4,8 +4,8 @@
 
 ### Links & Resources
 
-[Deployed Site]()
-[Pull Requests]()
+[Deployed Site](https://vibrant-yonath-19d80d.netlify.app/)
+[Pull Requests](https://github.com/JTaisey389/todo/pull/1)
 
 ### About this Application
 
