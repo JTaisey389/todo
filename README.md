@@ -4,7 +4,7 @@
 
 ### Links & Resources
 
-[Deployed Site](https://vibrant-yonath-19d80d.netlify.app/)
+[Deployed Site](https://friendly-ramanujan-1fdaa1.netlify.app/)
 [Pull Requests](https://github.com/JTaisey389/todo/pull/1)
 
 ### About this Application
