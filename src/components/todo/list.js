@@ -1,10 +1,15 @@
 // LIST IS GTG
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'
-// import Button from 'react-bootstrap/Button';
+import React, { useEffect, useState } from 'react';
+import { When } from 'react-if';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { FormControl } from 'react-bootstrap';
 
-export default function TodoList(props) {
+
+export default function TodoList(props) {  
     return (
       <ul>
         {props.list.map(item => (
@@ -20,27 +25,10 @@ export default function TodoList(props) {
             </span>
           
             </ListGroup.Item>
+            <Button className="deleteItemButton" type="submit" onClick={() => 
+            props.deleteItem(item._id)}>DELETE</Button>
           </ListGroup>
         ))}
       </ul>
     );
 }
-// class TodoList extends React.Component {
-
-//   render() {
-//     return (
-//       <ul>
-//         {this.props.list.map(item => (
-//           <li
-//             className={`complete-${item.complete.toString()}`}
-//             key={item._id}
-//           >
-//             <span onClick={() => this.props.handleComplete(item._id)}>
-//               {item.text}
-//             </span>
-//           </li>
-//         ))}
-//       </ul>
-//     );
-//   }
-// }
