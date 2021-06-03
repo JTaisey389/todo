@@ -1,34 +1,76 @@
 // LIST IS GTG
-import React, { useEffect, useState } from 'react';
-import { When } from 'react-if';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import ListGroup from 'react-bootstrap/ListGroup';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { FormControl } from 'react-bootstrap';
+import React from 'react';
+import Toast from 'react-bootstrap/Toast'
+import Badge from 'react-bootstrap/Badge'
+import Pagination from 'react-bootstrap/Pagination';
+import { useState, useContext } from 'react';
+import { SettingsContext } from '../../context/settings.js'
 
+export default function TodoList(props) { 
 
-export default function TodoList(props) {  
+  const context = useContext(SettingsContext);
+  const [currentPage, setCurrentPage] = useState(context.startingPage);
+  const lotsTodo = context.itemCount;
+
+  const effects = {
+    pill: {
+      cursor: 'pointer',
+    },
+  };
+
+  const sortedList = props.list.sort((firstItem, secondItem) => {
+    if (secondItem.difficultyRating > firstItem.difficultyRating) {
+      return 1;
+    } else if (firstItem.difficultyRating > secondItem.difficultyRating) {
+      return -1;
+    } else {
+      return 0;
+    }
+  })
+  const filterList = sortedList.filter((item) => !item.complete);
+  const filteredListIncomplete = sortedList.filter((item) => item.complete);
+  const allListItems = [...filterList, ...filteredListIncomplete];
+
+  const numberOfPages = Math.ceil(allListItems.length / lotsTodo);
+  const indexOfLastPost = currentPage * lotsTodo;
+  const indexOfFirstPost = indexOfLastPost - lotsTodo;
+  const currentPosts = allListItems.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginateNext = (pageNumber) => setCurrentPage(pageNumber);
+
+  const pageNumber = [];
+  const activePage = currentPage;
+  for (let i = 1; i < numberOfPages; i++){
+    pageNumber.push(
+      <Pagination.Item key={number} activePage={i === activePage} onClick={() => paginateNext(i)}>
+        {i}
+      </Pagination.Item>
+    )
+  }
     return (
-      <ul>
-        {props.list.map(item => (
-          <ListGroup>
-            <ListGroup.Item
-
-            className={`complete-${item.complete.toString()}`}
-            key={item._id}
-            variant={item.complete ? 'danger' : 'success'}
+      <>
+      {currentPosts.map((item) => (
+        <Toast key={item._id} onClose={() => props.handleDelete(item._id)}>
+          <Toast.Header>
+            <Badge
+              pill
+              style={effects.pill}
+              variant={item.complete ? "danger" : "success"}
+              onClick={() => props.handleComplete(item._id)}
             >
-            <span onClick={() => props.handleComplete(item._id)}>
-              {item.text}
-            </span>
-          
-            </ListGroup.Item>
-            <Button className="deleteItemButton" type="submit" onClick={() => 
-            props.deleteItem(item._id)}>DELETE</Button>
-          </ListGroup>
-        ))}
-      </ul>
+              {!item.complete ? "Pending" : "Complete"}
+            </Badge>
+            <strong className="mr-auto">{item.assignee}</strong>
+          </Toast.Header>
+          <Toast.Body>
+            {item.text}
+              difficulty:{item.difficulty}
+          </Toast.Body>
+        </Toast>
+      ))}
+      <Pagination>
+        {pageNumbers}
+      </Pagination>
+    </>
     );
 }

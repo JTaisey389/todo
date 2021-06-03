@@ -3,10 +3,10 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import "bootstrap/dist/css/bootstrap.min.css";
-import useForm from '../../Hooks/useForm.js';
+import useForm from '../../hooks/useForm.js';
 
 function TodoForm({ addItem }) {
-  const [values, handleInputChange, handleSubmit] = useForm({ addItem });
+  const [handleInputChange, handleSubmit] = useForm({ addItem });
   return (
     <>
       <h3>Add Item</h3>
