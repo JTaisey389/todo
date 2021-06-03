@@ -34,7 +34,7 @@ In this initial phase, we’re going to have to start by converting a legacy app
 
 **Event Architecture**
 
-![Link](Assets/Todo_UML.jpg)
+![Link](Assets/Todo_DayTwo.jpg)
 
 **Technical Requirements**
 
@@ -44,5 +44,3 @@ On application start, display all of the to do items from the API/Database
 When adding an item, issue a POST request to the API server
 When marking items complete, issue a PUT request to the API server for the item
 When deleting items, issue a DELETE request to the API server for the item
-
-Test
