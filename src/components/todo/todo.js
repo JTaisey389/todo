@@ -1,112 +1,78 @@
-import React from 'react';
-import { useEffect, useState } from "react";
-import TodoForm from "./form.js";
-import TodoList from "./list.js";
-import axios from "axios";
-import useAjax from "../../hooks/useAjax.js";
-// import Header from "../header/header.js";
-import Footer from "../footer/footer.js";
-// import SettingsProvider from "../../context/site.js";
-// import Login from '../../components/auth/login.js'
-// import Auth from "../auth/auth.js";
-// import AuthProvider from '../auth/authprovider.js';
+import React, { useState, useEffect } from 'react';
+import TodoForm from './form.js';
+import TodoList from './list.js';
+import Navbar from 'react-bootstrap/Navbar';
 
+import './todo.scss';
 
-// class ToDo extends React.Component: OLD CLASS FUNCTION
-
-const todoAPI = "https://api-js401.herokuapp.com/api/v1/todo";
-
-function If({ condition, children }) {
-  return condition ? children : null;
-}
-
-function Todo(props) {
+function ToDo() {
 
   const [list, setList] = useState([]);
-  document.title = `To Do List: ${list.filter((item) => !item.complete).length}`;
 
-  const [request, response] = useAjax();
-  const [data, setData] = useState();
-
-  useEffect(() => {
-    setData(response);
-  }, [response]);
-
-  const getItems = async () => {
-    //CREATE
-    let request = await axios({
-      method: "get",
-      url: todoAPI,
-    });
-    setList(request.data.results);
+  const addItem = (item) => { // CREATE THE ITEM
+    item._id = Math.random();
+    item.complete = false;
+    setList([...list, item]);
   };
-  const postItems = (input) => {
-    //READ
-    let options = {
-      url: todoAPI,
-      method: "post",
-      mode: "cors",
-      headers: { "Context-type": "application/json" },
-      data: input,
-    };
-    request(options);
-  };
-  const putItems = (id) => {
-    // UPDATE
-    const taskToPut = list.filter((i) => i._id === id)[0];
-    if (taskToPut._id) {
-      let options = {
-        url: `${todoAPI}/${id}`,
-        method: "put",
-        mode: "cors",
-        headers: { "Context-type": "application/json" },
-        data: { complete: !putItems.complete },
-      };
-      request(options);
+  const updateItem = (id, value) => { // UPDATE ITEM
+    let item = list.filter(i => i._id === id)[0] || {};
+    if (item._id) {
+      item.text = value;
+      let newList = list.map(listItem => listItem._id === item._id ? item : listItem);
+      setList(newList);
     }
   };
-  const deleteItems = (id) => {
-    // DELETE
-    let options = {
-      url: `${todoAPI}/${id}`,
-      method: "delete",
-      mode: "cors",
-      headers: { "Context-type": "application/json" },
-    };
-    request(options);
+  const deleteItem = id => { // DELETE ITEM
+    let item = list.filter(i => i._id === id)[0] || {};
+    if (item._id) {
+      let newList = list.filter(listItem => listItem._id !== id);
+      setList(newList);
+    }
+  };
+  const toggleComplete = id => { // FUNCTIONALITY TO COMPLETE THE TASK
+    let item = list.filter(i => i._id === id)[0] || {};
+    if (item._id) {
+      item.complete = !item.complete;
+      let newList = list.map(listItem => listItem._id === item._id ? item : listItem);
+      setList(newList);
+    }
   };
   useEffect(() => {
-    getItems();
-  }, [putItems, deleteItems]);
-  // YESTERDAY ===============
+    let newList = [
+      { _id: 1, complete: false, text: 'Clean the Kitchen', difficulty: 3, assignee: 'Person A' },
+      { _id: 2, complete: false, text: 'Do the Laundry', difficulty: 2, assignee: 'Person A' },
+      { _id: 3, complete: false, text: 'Walk the Dog', difficulty: 4, assignee: 'Person B' },
+      { _id: 4, complete: true, text: 'Do Homework', difficulty: 3, assignee: 'Person C' },
+      { _id: 5, complete: false, text: 'Take a Nap', difficulty: 1, assignee: 'Person B' },
+    ];
 
+    setList(newList);
+  }, []);
+  useEffect(() => {
+    if (list.length >= 1) { document.title = `${list.filter(item => !item.complete).length} items to complete` }
+  }, [list]);
   return (
     <>
-      {/* <AuthProvider>
-        <SettingsProvider> */}
-          {/* <Header /> */}
-          {/* <Auth capability="read"> */}
-            {/* */}
-            <main>
-                <h2 className="h2-text">To Do List Manager ({list.filter((item) => !item.complete).length})</h2>
-              <section className="todo">
-                <div>
-                  <TodoForm addItem={postItems} />
-                </div>
-                <div>
-                  <TodoList
-                    list={list}
-                    handleComplete={putItems}
-                    deleteItem={deleteItems}
-                  />
-                </div>
-              </section>
-            </main>
-          {/* </Auth> */}
-          <Footer/>
-        {/* </SettingsProvider>
-      </AuthProvider> */}
+      <header>
+        <Navbar bg="dark" variant="dark" className="todoManager">
+          <Navbar.Brand >To Do List Manager ({list.filter(item => !item.complete).length})</Navbar.Brand>
+        </Navbar>
+      </header>
+      <section className="todo">
+        <div>
+          <TodoForm addItem={addItem} />
+        </div>
+        <div>
+          <TodoList
+            list={list}
+            toggleComplete={toggleComplete}
+            deleteItem={deleteItem}
+            updateItem={updateItem}
+          />
+        </div>
+      </section>
     </>
-  )
+  );
 }
-export default Todo;
+
+export default ToDo;
