@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 export const SettingsContext = React.createContext();
 
 function SettingsProvider(props) {
-  const [displayItems, setDisplayItems] = useState('false');
-  const [itemCount, setItemCount] = useState(5);
-  const [sortField, setSortField] = useState('difficulty');
-  const [startingPage, setStartingPage] = useState(1);
+  const [hideCompletedItems, setHideCompletedItems] = useState(true);
+  const [sortItems, setSortItems] = useState('difficulty');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
 
   const state = {
-    displayItems,
-    itemCount,
-    sortField,
-    startingPage,
-    changeDisplayedItems: setDisplayItems,
-    changeItemCount: setItemCount,
-    changeSortField: setSortField,
-    changePage: setStartingPage,
+    hideCompletedItems,
+    setHideCompletedItems,
+    itemsPerPage,
+    setItemsPerPage,
+    sortItems,
+    setSortItems,
+    currentPage,
+    setCurrentPage,
   }
   return (
     <SettingsContext.Provider value={state}>

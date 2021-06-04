@@ -7,11 +7,12 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import useForm from '../../hooks/useForm.js';
 import Badge from 'react-bootstrap/Badge'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './todo.scss';
-import Pagination from './pagination.js';
 import { Modal } from 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { SettingsContext } from '../../context/site.js';
+import Pagination from './pagination.js';
 
+import './todo.scss';
 export default function TodoList(props) { 
   
   const context = useContext(SettingsContext);
