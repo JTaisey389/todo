@@ -4,12 +4,12 @@ import TodoForm from "./form.js";
 import TodoList from "./list.js";
 import axios from "axios";
 import useAjax from "../../hooks/useAjax.js";
-import Header from "../header/header.js";
+// import Header from "../header/header.js";
 import Footer from "../footer/footer.js";
-import SettingsProvider from "../../context/settings.js";
+// import SettingsProvider from "../../context/site.js";
 // import Login from '../../components/auth/login.js'
-import Auth from "../auth/auth.js";
-import AuthProvider from "../../context/authprovider.js";
+// import Auth from "../auth/auth.js";
+// import AuthProvider from '../auth/authprovider.js';
 
 
 // class ToDo extends React.Component: OLD CLASS FUNCTION
@@ -82,10 +82,10 @@ function Todo(props) {
 
   return (
     <>
-      <AuthProvider>
-        <SettingsProvider>
-          <Header />
-          <Auth capability="read">
+      {/* <AuthProvider>
+        <SettingsProvider> */}
+          {/* <Header /> */}
+          {/* <Auth capability="read"> */}
             {/* */}
             <main>
                 <h2 className="h2-text">To Do List Manager ({list.filter((item) => !item.complete).length})</h2>
@@ -102,11 +102,11 @@ function Todo(props) {
                 </div>
               </section>
             </main>
-          </Auth>
+          {/* </Auth> */}
           <Footer/>
-        </SettingsProvider>
-      </AuthProvider>
+        {/* </SettingsProvider>
+      </AuthProvider> */}
     </>
-  );
+  )
 }
 export default Todo;

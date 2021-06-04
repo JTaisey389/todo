@@ -74,7 +74,13 @@ The following user/developer stories detail the major functionality for this pha
 
 **Event Architecture**
 
-![Link](Assets/Todo_UML.jpg)
+![Link](Assets/Todo_DayTwo.jpg)
+
+### Day 3
+
+**Event Architecture**
+
+![Link](Assets/Todo_Final_UML.jpg)
 
 **Technical Requirements**
 

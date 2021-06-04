@@ -1,76 +1,87 @@
 // LIST IS GTG
-import React from 'react';
-import Toast from 'react-bootstrap/Toast'
+import React, { useState, useEffect, useContext } from 'react';
+// import { useState, useEffect, useContext } from 'react';
+import { When } from 'react-if';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import useForm from '../../hooks/useForm.js';
 import Badge from 'react-bootstrap/Badge'
-import Pagination from 'react-bootstrap/Pagination';
-import { useState, useContext } from 'react';
-import { SettingsContext } from '../../context/settings.js'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './todo.scss';
+import Pagination from './pagination.js';
+import { Modal } from 'bootstrap';
 
 export default function TodoList(props) { 
-
+  
   const context = useContext(SettingsContext);
-  const [currentPage, setCurrentPage] = useState(context.startingPage);
-  const lotsTodo = context.itemCount;
+  const [toggle, setToggle] = useState(false);
+  const [id, setId] = useState('');
+  const [value, setValue] = useState('');
+  const [handleSubmit] = useForm(lotsTodo);
 
-  const effects = {
-    pill: {
-      cursor: 'pointer',
-    },
-  };
-
-  const sortedList = props.list.sort((firstItem, secondItem) => {
-    if (secondItem.difficultyRating > firstItem.difficultyRating) {
-      return 1;
-    } else if (firstItem.difficultyRating > secondItem.difficultyRating) {
-      return -1;
-    } else {
-      return 0;
-    }
-  })
-  const filterList = sortedList.filter((item) => !item.complete);
-  const filteredListIncomplete = sortedList.filter((item) => item.complete);
-  const allListItems = [...filterList, ...filteredListIncomplete];
-
-  const numberOfPages = Math.ceil(allListItems.length / lotsTodo);
-  const indexOfLastPost = currentPage * lotsTodo;
-  const indexOfFirstPost = indexOfLastPost - lotsTodo;
-  const currentPosts = allListItems.slice(indexOfFirstPost, indexOfLastPost);
-
-  const paginateNext = (pageNumber) => setCurrentPage(pageNumber);
-
-  const pageNumber = [];
-  const activePage = currentPage;
-  for (let i = 1; i < numberOfPages; i++){
-    pageNumber.push(
-      <Pagination.Item key={number} activePage={i === activePage} onClick={() => paginateNext(i)}>
-        {i}
-      </Pagination.Item>
-    )
+  function toggleEvent(id) {
+    setToggle(!toggle);
+    setId(id);
   }
-    return (
-      <>
-      {currentPosts.map((item) => (
-        <Toast key={item._id} onClose={() => props.handleDelete(item._id)}>
-          <Toast.Header>
-            <Badge
-              pill
-              style={effects.pill}
-              variant={item.complete ? "danger" : "success"}
-              onClick={() => props.handleComplete(item._id)}
-            >
-              {!item.complete ? "Pending" : "Complete"}
-            </Badge>
-            <strong className="mr-auto">{item.assignee}</strong>
-          </Toast.Header>
-          <Toast.Body>
-            {item.text}
-              difficulty:{item.difficulty}
-          </Toast.Body>
-        </Toast>
-      ))}
-      <Pagination>
-        {pageNumbers}
-      </Pagination>
+  useEffect(() => {
+    console.log(value)
+  });
+  function lotsTodo(task) {
+    setValue(task);
+    props.updateItem(id, value)
+  }
+  const indexOfLastPost = context.currentPage * context.itemsPerPage;
+  const indexOfFirstPost = indexOfLastPost - context.itemsPerPage;
+  const currentPosts = props.list.slice(indexOfFirstPost, indexOfLastPost);
+  
+  const paginateTogether = pageNumber => context.setCurrentPage(pageNumber);
+
+  return (
+    <>
+    <div id="modal-container">
+      <Modal.Dialog>
+        {currentPosts.map(item => (
+          <section>
+            <Modal.Header>
+              <Modal.Title>
+                <button id="delete" type="submit" onClick={() => props.deleteItem(item._id)} type="button" class="btn-close float-right"></button>
+                <Badge 
+                className={`complete-${item.complete.toString()}`}
+                key={item._id}
+                onClick={() => props.toggleComplete(item._id)}
+                type="submit"
+                pill
+                variant={item.complete === true ? 'danger' : 'success'}
+                >
+                {item.complete === true ? 'complete' : 'pending'}
+                </Badge>{''}
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>{item.text}</p>
+            </Modal.Body>
+            <Modal.Footer id="modal-footer">
+              <small id="difficulty">Difficulty Level: {item.difficulty}</small>
+              <Button onClick={() => toggleEvent(item._id)} variant="primary">Update</Button>
+            </Modal.Footer>
+          </section>
+        ))}
+      </Modal.Dialog>
+    </div>
+    <When condition={toggle === true}>
+      <Form id="formToggle">
+        <FormControl onChange={(e) => setValue(e.target.value)} placeholder="update task"/>
+        <Button onClick={(e) => { handleSubmit(e); toggleEvent(id); }}>UPDATE</Button>
+      </Form>
+    </When>
+    <Pagination
+    itemsPerPage={context.itemsPerPage}
+    totalPosts={props.list.length}
+    paginateTogether={paginateTogether}
+    />
     </>
-    );
+  )
 }
+// example of  turnArray which takes place of an if/else statement
+// {item.complete === true ? 'danger' : 'success}

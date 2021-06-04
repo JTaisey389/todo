@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AuthContext } from '../../context/authprovider.js'
+import { AuthContext } from './authprovider.js'
 import useForm from '../../hooks/useForm.js'
 
 function If({ condition, children }) {
