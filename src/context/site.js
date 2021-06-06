@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 
+
 export const SettingsContext = React.createContext();
 
 function SettingsProvider(props) {
-  const [hideCompletedItems, setHideCompletedItems] = useState(true);
+  const [hideCompletedItems, setHideCompletedItems] = useState(false);
   const [sortItems, setSortItems] = useState('difficulty');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(3);

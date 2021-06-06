@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { AuthContext } from 'react';
+import { useContext, AuthContext } from 'react';
 import jwt from 'jsonwebtoken';
 
 function If({ condition, children }) {
