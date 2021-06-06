@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import TodoForm  from './form.js';
 import TodoList from './list.js';
 import './todo.scss'
@@ -7,7 +7,7 @@ const todoAPI = 'https://api-js401.herokuapp.com/api/v1/todo';
 
 const ToDo = () => {
 
-  const [list, setList] = useState([]);
+  const [list, setList, addItem, updateItem, deleteItem, toggleComplete] = useState([]);
 
   const _addItem = (item) => {
     item.due = new Date();
@@ -79,6 +79,7 @@ const ToDo = () => {
         <div>
           <TodoList
             list={list}
+            handleDelete={deleteItem}
             handleComplete={_toggleComplete}
           />
         </div>

@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import TodoForm from './form.js';
 import TodoList from './list.js';
 import Navbar from 'react-bootstrap/Navbar';
 
 import './todo.scss';
 
-function ToDo() {
+function Todo() {
 
   const [list, setList] = useState([]);
 
+  console.log(list);
   const addItem = (item) => { // CREATE THE ITEM
     item._id = Math.random();
     item.complete = false;
@@ -75,4 +76,4 @@ function ToDo() {
   );
 }
 
-export default ToDo;
+export default Todo;

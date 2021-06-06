@@ -1,12 +1,13 @@
 // REFACTORED FORM.JS FOR CLEANER CODE
 import React from "react";
-import Button from "react-bootstrap/Button";
-import Form from 'react-bootstrap/Form';
+import { Button, Form } from 'react-bootstrap';
+// import Button from "react-bootstrap/Button";
+// import Form from 'react-bootstrap/Form';
 import "bootstrap/dist/css/bootstrap.min.css";
 import useForm from '../../hooks/useForm.js';
 
 function TodoForm({ addItem }) {
-  const [handleInputChange, handleSubmit] = useForm({ addItem });
+  const [handleSubmit, handleInputChange, values] = useForm(addItem);
   return (
     <>
       <h3>Add Item</h3>

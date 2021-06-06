@@ -2,17 +2,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 // import { useState, useEffect, useContext } from 'react';
 import { When } from 'react-if';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
+import { Button, Form, FormControl, Badge, Modal } from 'react-bootstrap';
 import useForm from '../../hooks/useForm.js';
-import Badge from 'react-bootstrap/Badge'
-import { Modal } from 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SettingsContext } from '../../context/site.js';
 import Pagination from './pagination.js';
 
 import './todo.scss';
+
 export default function TodoList(props) { 
   
   const context = useContext(SettingsContext);
@@ -32,21 +29,28 @@ export default function TodoList(props) {
     setValue(task);
     props.updateItem(id, value)
   }
+  let currentItems = props.list;
+
+  if (context.hideCompletedItems) {
+    currentItems = currentItems.filter(item => !item.complete);
+  }
+  console.log(currentItems)
   const indexOfLastPost = context.currentPage * context.itemsPerPage;
   const indexOfFirstPost = indexOfLastPost - context.itemsPerPage;
-  const currentPosts = props.list.slice(indexOfFirstPost, indexOfLastPost);
+  console.log(indexOfFirstPost,indexOfLastPost);
+  currentItems = currentItems.slice(indexOfFirstPost, indexOfLastPost);
   
-  const paginateTogether = pageNumber => context.setCurrentPage(pageNumber);
-
+  const paginate = pageNumber => context.setCurrentPage(pageNumber);
+  console.log(currentItems)
   return (
     <>
     <div id="modal-container">
       <Modal.Dialog>
-        {currentPosts.map(item => (
-          <section>
+        {currentItems.map((item, i) => (
+          <section key={i}>
             <Modal.Header>
               <Modal.Title>
-                <button id="delete" type="submit" onClick={() => props.deleteItem(item._id)} type="button" class="btn-close float-right"></button>
+                <button id="delete" type="submit" onClick={() => props.deleteItem(item._id)} type="button" className="btn-close float-right"></button>
                 <Badge 
                 className={`complete-${item.complete.toString()}`}
                 key={item._id}
@@ -76,11 +80,13 @@ export default function TodoList(props) {
         <Button onClick={(e) => { handleSubmit(e); toggleEvent(id); }}>UPDATE</Button>
       </Form>
     </When>
+    <div>
     <Pagination
     itemsPerPage={context.itemsPerPage}
     totalPosts={props.list.length}
-    paginateTogether={paginateTogether}
+    paginate={paginate}
     />
+    </div>
     </>
   )
 }

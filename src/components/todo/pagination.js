@@ -1,6 +1,6 @@
 import React from 'react';
-import Nav from 'react-bootstrap/Nav';
-import Button from 'react-bootstrap/Button';
+// import Nav from 'react-bootstrap/Nav';
+import Button  from 'react-bootstrap/Button';
 
 const Pagination = ({ itemsPerPage, totalItems, paginateTogether }) => {
   const pageNumber = []
@@ -9,17 +9,17 @@ const Pagination = ({ itemsPerPage, totalItems, paginateTogether }) => {
     pageNumber.push(i);
   }
   return(
-    <Nav>
+    <nav>
       <ul className="pagniation">
         {pageNumber.map(number => (
           <li key={number} className="page-items">
-            <Button onClick={() => paginateTogether(number)} className="pagination-link">
+            <Button variant="outline-dark" onClick={() => paginateTogether(number)} className="pagination-link">
               {number}
             </Button>
           </li>
         ))}
       </ul>
-    </Nav>
+    </nav>
   )
 }
 
